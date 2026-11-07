@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="230" viewBox="0 0 880 230" role="img" aria-labelledby="t d">
+  <title id="t">Hekimcan Aktaş</title>
+  <desc id="d">Software engineer. Systems where correctness, privacy and auditability are requirements.</desc>
+  <style>
+    .bg{fill:#F5F4EE}.ink{fill:#141413}.mute{fill:#5E5D59}.clay{fill:#D97757}.rule{stroke:#D9D6CC}
+    .grid{stroke:#E8E5DC}
+    .serif{font-family:"Tiempos Headline",Georgia,"Times New Roman",serif}
+    .sans{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+    .mono{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+    @media (prefers-color-scheme: dark){
+      .bg{fill:#1F1E1D}.ink{fill:#F5F4EE}.mute{fill:#A6A39A}.rule{stroke:#3A3936}.grid{stroke:#2A2927}
+    }
+  </style>
+  <rect class="bg" width="880" height="230" rx="14"/>
+  <g class="grid" stroke-width="1">
+    <path d="M640 0V230M700 0V230M760 0V230M820 0V230M600 40H880M600 100H880M600 160H880"/>
+  </g>
+  <!-- invariant mark: balanced ledger / merkle node -->
+  <g transform="translate(730 115)">
+    <circle r="46" fill="none" class="rule" stroke-width="1.5"/>
+    <path d="M-30 0H30M0 -30V30" class="rule" stroke-width="1.5"/>
+    <circle r="7" class="clay"/>
+    <circle cx="-30" cy="0" r="4" class="ink"/><circle cx="30" cy="0" r="4" class="ink"/>
+    <circle cx="0" cy="-30" r="4" class="ink"/><circle cx="0" cy="30" r="4" class="ink"/>
+  </g>
+  <text x="48" y="62" class="mono clay" font-size="13" letter-spacing="1.5">SOFTWARE ENGINEER · İZMİR</text>
+  <text x="48" y="118" class="serif ink" font-size="46">Hekimcan Aktaş</text>
+  <text x="48" y="156" class="sans mute" font-size="17">Systems where correctness, privacy and auditability</text>
+  <text x="48" y="180" class="sans mute" font-size="17">are requirements, not features.</text>
+  <text x="48" y="206" class="mono mute" font-size="12">.NET · PostgreSQL · Oracle PL/SQL · distributed data</text>
+</svg>

@@ -1,83 +1,121 @@
-# Hekimcan Aktaş
+<p align="center">
+  <img src="assets/header.svg" width="880" alt="Hekimcan Aktaş: software engineer working on systems where correctness, privacy and auditability are requirements.">
+</p>
 
-**Software engineer · systems where correctness, privacy and auditability are requirements.**
-.NET · PostgreSQL · Oracle PL/SQL · distributed data · İzmir, Türkiye
+I build backend and data systems for places where a wrong answer is expensive: money that must balance,
+health records that must stay private, and regulations that must be enforced in code rather than in a policy PDF.
 
-I design systems the way a reviewer would attack them. I start with the invariant that must never break, then
-the failure that would break it, then the test that proves it holds. Most of my work sits where money, health
-data and regulation meet. In those places "it works on my machine" is not evidence. A measured number and a
-written trade-off are.
+My method is the same in every repository. I name the invariant, find the failure that would break it, prove it holds
+with a test against a real database, then measure the cost and write down the trade-off.
 
-[hekimaktas.com](https://hekimaktas.com) · hekimcan206@gmail.com
-
----
-
-## How I work
-
-| Principle | What it looks like in my repositories |
-|---|---|
-| **Invariants first** | The database enforces them: deferred constraint triggers, append-only history, least-privilege roles. Property-based tests (FsCheck) attack them. |
-| **Measure, don't claim** | Every performance number comes from a reproducible run. Each run records the hardware, the host load and its medians, in `docs/benchmarks.md`. |
-| **Decisions are written down** | ADRs list the options I rejected and why. The README says what the system does *not* do. |
-| **Real dependencies in tests** | Integration tests run against real PostgreSQL 17 and Oracle 23ai through Testcontainers, not in-memory fakes. |
-| **Privacy by construction** | Synthetic data only. PII is classified, masked or encrypted by default. Each design answers who can see the data and whether access leaves a trace. |
-| **One command to verify** | `docker compose up` runs the full demo, and CI runs that same demo and asserts the result. |
+<p>
+  <a href="https://hekimaktas.com"><img alt="Website" src="https://img.shields.io/badge/hekimaktas.com-141413?style=flat-square&logo=googlechrome&logoColor=F5F4EE"></a>
+  <a href="mailto:hekimcan206@gmail.com"><img alt="Email" src="https://img.shields.io/badge/hekimcan206@gmail.com-D97757?style=flat-square&logo=gmail&logoColor=white"></a>
+</p>
 
 ---
 
-## Selected work
+### Selected work
 
-### [ledger-recon](https://github.com/hekimcan206/ledger-recon): double-entry ledger with exactly-once posting
-PostgreSQL · .NET 10 · Npgsql · FsCheck · NBomber
-- **50 identical concurrent requests → exactly 1 journal entry**, proven under both row-lock and `SERIALIZABLE` strategies.
-- End-of-day reconciliation against card, EFT/FAST and MT940 files. It reports exactly the defects the generator injected, checked over 200 generated days per run.
-- **1,185 RPS at p99 75.9 ms** with row locks, against 523 RPS under `SERIALIZABLE` with retryable aborts. The ADR explains why that difference decides the default strategy.
+<table>
+<tr>
+<td width="50%" valign="top">
 
-### [medula-precheck](https://github.com/hekimcan206/medula-precheck): healthcare billing rules as versioned code
-.NET 10 · Oracle 23ai · PL/SQL · ODP.NET
-- 22 effective-dated SUT rules across 3 rule versions. Each rule has golden pass and fail cases, a reason in Turkish and English, and a machine-readable fix.
-- A set-based PL/SQL bulk path and the .NET engine produce **byte-identical findings on 3,000 invoices**.
-- 142,305 invoices/s in .NET and 8,695 invoices/s end to end through Oracle. The benchmark also documents an execution-plan reuse regression it found.
+**[ledger-recon](https://github.com/hekimcan206/ledger-recon)**<br>
+<sub>PostgreSQL · .NET 10 · FsCheck · NBomber</sub>
 
-### [kvkk-data-inventory](https://github.com/hekimcan206/kvkk-data-inventory): PII discovery and masking across Oracle and PostgreSQL
-.NET 10 · Oracle · PostgreSQL · KVKK/GDPR
-- 22 detectors combine column-name heuristics, value sampling and checksums. They score **precision/recall/F1 0.939** on a labelled schema with deliberate decoys, with identical results on both engines.
-- The ablation shows why the signals are combined: names alone score F1 0.835 and values alone 0.79.
-- Keyed one-way HMAC masking keeps TCKN checksums valid, gives the same pseudonym on both engines, and resists dictionary attacks without the key.
+A double-entry ledger with exactly-once posting and end-of-day reconciliation against card, EFT/FAST and MT940 files.
 
-### [dotnet-service-template](https://github.com/hekimcan206/dotnet-service-template): the baseline every service starts from
-`dotnet new hekim-service`: central package management, warnings as errors, OpenTelemetry, Serilog JSON, ProblemDetails, a chiseled non-root image (198 MB), Testcontainers and CI/CodeQL/release-please. 93.7% line coverage of the API code.
+`50 concurrent duplicates → 1 entry`<br>
+`1,185 RPS · p99 75.9 ms`
+
+</td>
+<td width="50%" valign="top">
+
+**[medula-precheck](https://github.com/hekimcan206/medula-precheck)**<br>
+<sub>Oracle 23ai · PL/SQL · .NET 10</sub>
+
+Healthcare billing rules as versioned, effective-dated code, with a set-based PL/SQL bulk path that matches the .NET engine finding for finding.
+
+`22 rules × 3 versions`<br>
+`byte-identical on 3,000 invoices`
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**[kvkk-data-inventory](https://github.com/hekimcan206/kvkk-data-inventory)**<br>
+<sub>Oracle · PostgreSQL · KVKK / GDPR</sub>
+
+Finds, classifies and masks personal data across two database engines. Masking is keyed and one-way, and preserves checksums.
+
+`F1 0.939 on a labelled schema`<br>
+`2,079 columns scanned in 0.94 s`
+
+</td>
+<td width="50%" valign="top">
+
+**[dotnet-service-template](https://github.com/hekimcan206/dotnet-service-template)**<br>
+<sub>.NET 10 · OpenTelemetry · Testcontainers</sub>
+
+The baseline every service starts from, installed with `dotnet new hekim-service`. It includes analyzers as errors, a chiseled non-root image, CI and CodeQL.
+
+`198 MB image · ready in 10.4 s`<br>
+`93.7% line coverage`
+
+</td>
+</tr>
+</table>
+
+<sub>Every number above comes from a reproducible run. Each repository's <code>docs/benchmarks.md</code> records the hardware, the host load and the method.</sub>
+
+---
+
+### Engineering principles
+
+**Invariants live in the database.** Deferred constraint triggers, append-only history and least-privilege roles. Application code is a second line of defence, not the first.
+
+**Tests attack, they don't confirm.** Property-based tests, concurrency races and golden cases all run against real PostgreSQL and Oracle through Testcontainers.
+
+**Numbers or it didn't happen.** A performance claim ships with its benchmark, its environment and its outliers.
+
+**Decisions are written.** Every repository has ADRs listing the options I rejected and why, plus an honest *Limitations* section.
+
+**Privacy is a design input.** Before a schema exists, I decide who can see the data, how long it lives and what trace an access leaves.
+
+---
 
 <details>
-<summary><b>In progress</b>: same standard, landing one by one</summary>
+<summary><b>Currently building</b></summary>
+<br>
 
 | Area | Repositories |
 |---|---|
-| Healthcare & privacy | `patient-feedback-workflow` · `hbys-fhir-bridge` · `sut-rules` · `kvkk-dsar` · `field-crypto` · `merkle-audit` |
-| AI infrastructure | `guarded-db-mcp` (secure MCP server for Oracle/PostgreSQL) · `rag-tr` · `tr-rag-eval` · `oracle23ai-rag` |
+| AI infrastructure | `guarded-db-mcp`, a read-only MCP server for Oracle and PostgreSQL with PII masking and audit · `rag-tr` · `tr-rag-eval` · `oracle23ai-rag` |
 | Distributed systems | `offline-pos-sync` · `webhook-relay` · `idempotent-api` · `order-saga-temporal` · `cdc-pipeline` · `outbox-lab` |
-| Databases & migration | `ora2pg-verify` · `saas-rls-starter` · `plan-guard` |
+| Healthcare & privacy | `patient-feedback-workflow` · `hbys-fhir-bridge` · `sut-rules` · `kvkk-dsar` · `field-crypto` · `merkle-audit` |
+| Databases | `ora2pg-verify` · `saas-rls-starter` · `plan-guard` |
 | Finance | `fx-bitemporal` · `bank-statement-recon` · `trkarekod` · `ubltr-validator` |
 | Reliability | `slo-chaos-lab` · `flags-rollout` · `signalr-scale-lab` |
 
 </details>
 
+<details>
+<summary><b>Toolbox</b></summary>
+<br>
+
+| | |
+|---|---|
+| **Languages** | C# · SQL · PL/SQL · Python · TypeScript |
+| **Backend** | .NET 10, ASP.NET Core, EF Core, Dapper, SignalR, Hangfire, OpenTelemetry |
+| **Data** | PostgreSQL · Oracle 23ai · Redis · PostGIS · SQL Server: modelling, query tuning, CDC |
+| **Quality** | xUnit v3 · Testcontainers · FsCheck · NBomber · BenchmarkDotNet · Playwright |
+| **Platform** | Docker · GitHub Actions · OCI |
+| **Certified** | OCI Architect Associate · OCI Foundations Associate · Oracle AI Database Foundations |
+
+</details>
+
 ---
 
-## Toolbox
-
-**Languages:** C#, SQL, PL/SQL, Python, TypeScript
-**Backend:** .NET 10 / ASP.NET Core, EF Core, Dapper, SignalR, Hangfire, OpenTelemetry
-**Data:** PostgreSQL, Oracle (PL/SQL, 23ai), Redis, PostGIS, SQL Server; data modelling, query optimisation, CDC
-**Infra:** Docker, GitHub Actions, OCI
-**Testing:** xUnit v3, Testcontainers, FsCheck, NBomber, BenchmarkDotNet, Playwright
-
-**Certifications:** OCI Certified Architect Associate (2026) · OCI Foundations Associate (2026) · Oracle AI Database Foundations Associate
-
-## Open-source contributions
-
-Contributions to upstream projects will be listed here once they are merged.
-
----
-
-<sub>Every repository uses synthetic data only. No employer or customer code, schemas or data appear on this profile.</sub>
+<sub>All repositories use synthetic data only. No employer or customer code, schemas or data appear on this profile.</sub>
